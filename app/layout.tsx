@@ -34,6 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.ico" />
+        <meta name="google-site-verification" content="8vtWTaRmZ99VNeEg14rA299KcPo0M6ZQcNjnMAHk7B0" />
         {/* Google Analytics */}
         <Script async src={`https://www.googletagmanager.com/gtag/js?id=G-XNVRWP9VEF`} />
         <Script id="ga-init" strategy="afterInteractive">
