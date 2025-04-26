@@ -1,5 +1,6 @@
 import Script from 'next/script';
 import '../styles/globals.css';
+import Footer from '@/components/Footer';
 
 export const metadata = {
     title: 'JSON Formatter & Viewer – Free Online Tool',
@@ -48,6 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="bg-white text-gray-900 dark:bg-gray-900 dark:text-white">
         {children}
+        <Footer />
       </body>
     </html>
   );

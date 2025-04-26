@@ -3,9 +3,11 @@
 import { useState, useEffect } from 'react';
 import JsonOutputTabs from './JsonOutputTabs';
 import { trackEvent } from '@/lib/gtag';
+import ActionButton from './ActionButton';
 
 export default function JsonFormatter() {
   const [input, setInput] = useState('');
+  const [isJsonValid, setIsJsonValid] = useState(false);
   const [output, setOutput] = useState('');
   const [error, setError] = useState('');
   const [indent, setIndent] = useState(2);
@@ -32,8 +34,10 @@ export default function JsonFormatter() {
       const pretty = JSON.stringify(parsed, null, indent);
       setOutput(pretty);
       setError('');
+      setIsJsonValid(true);
       trackEvent({ action: 'format_json', category: 'JSON Actions', label: 'Format Button' });
     } catch {
+      setIsJsonValid(false);
       setOutput('');
     }
   };
@@ -68,6 +72,7 @@ export default function JsonFormatter() {
     setInput('');
     setOutput('');
     setError('');
+    setIsJsonValid(false);
   };
 
   return (
@@ -121,11 +126,13 @@ export default function JsonFormatter() {
 
       {/* Toolbar */}
       <div className="flex flex-wrap gap-3 justify-center">
-        <button onClick={handleFormat} className="btn btn-primary">Format</button>
-        <button onClick={handleMinify} className="btn btn-yellow">Minify</button>
-        <button onClick={handleCopy} className="btn btn-green" disabled={!output}>Copy</button>
-        <button onClick={handleDownload} className="btn btn-purple" disabled={!output}>Download</button>
-        <button onClick={handleClear} className="btn btn-secondary">Clear</button>
+      <div className="flex flex-wrap gap-3 mt-4">
+        <ActionButton label="Format" onClick={handleFormat} color="bg-blue-500" />
+        <ActionButton label="Minify" onClick={handleMinify} color="bg-yellow-500" disabled={!isJsonValid}/>
+        <ActionButton label="Copy" onClick={handleCopy} color="bg-green-500" disabled={!isJsonValid}/>
+        <ActionButton label="Download" onClick={handleDownload} color="bg-purple-500" disabled={!isJsonValid} />
+        <ActionButton label="Clear" onClick={handleClear} color="bg-gray-600" />
+        </div>
        </div>
 
 
