@@ -1,0 +1,1 @@
+// ErrorBanner Component Placeholder

@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom global styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100;
+  font-family: system-ui, sans-serif;
+}
+
+/* Style for buttons */
+button {
+  @apply px-4 py-2 rounded transition-colors;
+}
+
+/* Input & Textarea */
+textarea, input {
+  @apply border border-gray-300 dark:border-gray-700 rounded p-2 bg-white dark:bg-gray-800 text-sm font-mono;
+}
+
+/* Headings */
+h1, h2, h3 {
+  @apply font-bold text-gray-800 dark:text-gray-100;
+}
+
+/* Links */
+a {
+  @apply text-blue-600 hover:underline;
+}
+
+/* JSON Output Styling */
+pre {
+  @apply bg-gray-100 dark:bg-gray-800 p-4 rounded overflow-auto text-sm font-mono border dark:border-gray-700;
+}
+.btn-primary {
+    @apply bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition;
+  }
+  
+  .btn-yellow {
+    @apply bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition;
+  }
+  
+  .btn-green {
+    @apply bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition;
+  }
+  
+  .btn-purple {
+    @apply bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition;
+  }
+  
+  button:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+  
