@@ -1,15 +1,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import JsonOutputTabs from './JsonOutputTabs';
+import { trackEvent } from '@/lib/gtag';
 
 export default function JsonFormatter() {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
   const [error, setError] = useState('');
   const [indent, setIndent] = useState(2);
-  const [autoFormat, setAutoFormat] = useState(false);
+  const [autoFormat, setAutoFormat] = useState(true);
 
-  // Live Validation
+  // Live Validation & Auto-Format
   useEffect(() => {
     if (!input) {
       setError('');
@@ -30,6 +32,7 @@ export default function JsonFormatter() {
       const pretty = JSON.stringify(parsed, null, indent);
       setOutput(pretty);
       setError('');
+      trackEvent({ action: 'format_json', category: 'JSON Actions', label: 'Format Button' });
     } catch {
       setOutput('');
     }
@@ -41,12 +44,16 @@ export default function JsonFormatter() {
       const minified = JSON.stringify(parsed);
       setOutput(minified);
       setError('');
+      trackEvent({ action: 'minify_json', category: 'JSON Actions', label: 'Minify Button' });
     } catch {
       setOutput('');
     }
   };
 
-  const handleCopy = () => navigator.clipboard.writeText(output);
+  const handleCopy = () => {
+    navigator.clipboard.writeText(output);
+    trackEvent({ action: 'copy_json', category: 'JSON Actions', label: 'Copy Button' });
+  };
 
   const handleDownload = () => {
     const blob = new Blob([output], { type: 'application/json' });
@@ -54,6 +61,7 @@ export default function JsonFormatter() {
     link.href = URL.createObjectURL(blob);
     link.download = 'formatted.json';
     link.click();
+    trackEvent({ action: 'download_json', category: 'JSON Actions', label: 'Download Button' });
   };
 
   const handleClear = () => {
@@ -104,26 +112,22 @@ export default function JsonFormatter() {
           </p>
         </div>
 
-        {/* JSON Output */}
+        {/* Output Tabs */}
         <div>
-          <h2 className="text-xl font-semibold mb-2">Formatted Output</h2>
-          <pre className="w-full p-4 border rounded bg-gray-100 dark:bg-gray-900 overflow-auto text-sm max-h-96">
-            {output || '// Your formatted or minified JSON will appear here'}
-          </pre>
-          <p className="text-xs text-gray-500 mt-1">
-            {output.length} chars | {output.split('\n').length} lines
-          </p>
+          <h2 className="text-xl font-semibold mb-2">Output</h2>
+          <JsonOutputTabs jsonString={output} />
         </div>
       </div>
 
       {/* Toolbar */}
       <div className="flex flex-wrap gap-3 justify-center">
-        <button onClick={handleFormat} className="btn-primary">Format</button>
-        <button onClick={handleMinify} className="btn-yellow">Minify</button>
-        <button onClick={handleCopy} className="btn-green" disabled={!output}>Copy</button>
-        <button onClick={handleDownload} className="btn-purple" disabled={!output}>Download</button>
-        <button onClick={handleClear} className="btn-secondary">Clear</button>
-      </div>
+        <button onClick={handleFormat} className="btn btn-primary">Format</button>
+        <button onClick={handleMinify} className="btn btn-yellow">Minify</button>
+        <button onClick={handleCopy} className="btn btn-green" disabled={!output}>Copy</button>
+        <button onClick={handleDownload} className="btn btn-purple" disabled={!output}>Download</button>
+        <button onClick={handleClear} className="btn btn-secondary">Clear</button>
+       </div>
+
 
       {/* Error Message */}
       {error && (
